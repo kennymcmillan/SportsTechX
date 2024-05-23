@@ -1,4 +1,3 @@
- 
 name: Run sporttechXfull_scrape
 
 on:
@@ -7,6 +6,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8' # Specify the Python version you need
+          python-version: '3.12' # Specify the Python version you need
 
       - name: Install dependencies
         run: |
@@ -38,3 +38,4 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
