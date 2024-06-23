@@ -70,6 +70,9 @@ max_rows = int(re.search(r'/ (\d+)', page_info).group(1))
 total_pages = (max_rows + 99) // 100  
 
 for _ in range(total_pages): ## outer loop
+
+    if page_number >= 2:
+        break
     
     driver.execute_script('arguments[0].scrollTop = 0', scroll_container)
     time.sleep(3)
