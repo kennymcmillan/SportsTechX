@@ -112,9 +112,96 @@ The combination of running Xvfb to provide a virtual display and configuring Chr
 
 By addressing these specific requirements, the updated configuration allows your web scraping script to execute successfully in the CI environment.
 
+################################################################################################################################
 
 
+The error you're encountering, "Permission to kennymcmillan/SportsTechX.git denied to github-actions[bot]," indicates that the GitHub Actions bot does not have permission to push changes to the repository. This can be resolved by configuring the correct permissions.
 
+Here's how you can set up a personal access token to allow the GitHub Actions bot to push changes:
+
+Create a Personal Access Token:
+
+Go to GitHub Settings.
+Generate a new token with repo scope.
+Store the Token in GitHub Secrets:
+
+Go to your repository on GitHub.
+Navigate to Settings > Secrets > New repository secret.
+Add a new secret named ACTIONS_TOKEN (or any other name you prefer) and paste the personal access token you generated.
+Update Your GitHub Actions YAML File:
+
+Modify the Commit and push changes step in your YAML file to use the stored secret.
+Here's the updated YAML file with these changes:
+
+yaml
+Copy code
+name: Run sporttechXfull_scrape
+
+on:
+  schedule:
+    - cron: "10 16 * * *" # Runs daily at 4:10 PM UTC
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12' # Specify the Python version you need
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip xvfb
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo apt-get install -f
+
+      - name: Verify Chrome Installation
+        run: google-chrome --version
+
+      - name: Run Python script
+        env:
+          DISPLAY: ":99.0"
+        run: |
+          Xvfb :99 -ac &
+          sleep 3 # Give Xvfb some time to start
+          python sporttechXfull_scrape.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add sportstech.csv
+          git commit -m "Update sportstech.csv via GitHub Actions"
+          git push https://x-access-token:${{ secrets.ACTIONS_TOKEN }}@github.com/kennymcmillan/SportsTechX.git HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+Explanation:
+Personal Access Token:
+
+By creating and using a personal access token, you grant the GitHub Actions bot the necessary permissions to push changes to your repository.
+Store Token in Secrets:
+
+Storing the token in GitHub Secrets ensures that it remains secure and is not exposed in your YAML file.
+Using the Token:
+
+The git push command is updated to use the token stored in secrets.ACTIONS_TOKEN to authenticate and push changes.
+By following these steps, your GitHub Actions workflow should be able to push changes to your repository without encountering permission errors.
 
 
 
