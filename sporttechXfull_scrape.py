@@ -72,9 +72,6 @@ total_pages = (max_rows + 99) // 100
 for page in range(min(2, total_pages)):
 #for _ in range(total_pages): ## outer loop
 
-    if page_number >= 2:
-        break
-    
     driver.execute_script('arguments[0].scrollTop = 0', scroll_container)
     time.sleep(3)
     
