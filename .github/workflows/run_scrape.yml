@@ -5,7 +5,7 @@ on:
     - cron: "10 16 * * *" # Runs daily at 4:10 PM UTC
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
