@@ -69,12 +69,12 @@ page_info = driver.find_element(By.CSS_SELECTOR, ".pageLabel").text
 max_rows = int(re.search(r'/ (\d+)', page_info).group(1))
 total_pages = (max_rows + 99) // 100  
 
-for page in range(min(2, total_pages)):
+for page in range(min(5, total_pages)):
 #for _ in range(total_pages): ## outer loop
 
     driver.execute_script('arguments[0].scrollTop = 0', scroll_container)
     time.sleep(3)
-    print(page)
+
     
     for _ in range(6):  ## inner loop
         new_rows_data = extract_rows()
