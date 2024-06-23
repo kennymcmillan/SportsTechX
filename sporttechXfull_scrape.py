@@ -1,25 +1,41 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.edge.options import Options as EdgeOptions
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
 
-# Setup Chrome and WebDriver
-options = webdriver.ChromeOptions()
-options.add_argument("--incognito")
-options.add_argument("--headless")  # Add headless option
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
-options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
-
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-driver.maximize_window()
-
+import socket
 import time
 import re
 import pandas as pd
+
+computer_name = socket.gethostname()
+
+if computer_name == "AZFLP2593":
+    
+    options = webdriver.EdgeOptions()
+    options.add_argument("--incognito")
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+
+    driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=options)
+    driver.maximize_window()
+  
+else:
+# Setup Chrome and WebDriver
+    options = webdriver.ChromeOptions()
+    options.add_argument("--incognito")
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+    driver.maximize_window()
+    
+
+print(f"Using {'Edge' if computer_name == 'AZFLP2593' else 'Chrome'} WebDriver")
 
 # Open the Looker Studio report
 url = 'https://lookerstudio.google.com/reporting/c7175b01-3602-41d5-9c31-31bfcbfcc574/page/p_0dc9nmnl8c'
