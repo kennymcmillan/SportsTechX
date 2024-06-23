@@ -5,7 +5,7 @@ on:
     - cron: "10 16 * * *" # Runs daily at 4:10 PM UTC
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -45,13 +45,21 @@ jobs:
           sleep 3 # Give Xvfb some time to start
           python sporttechXfull_scrape.py
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sportstech-data
+          path: sportstech.csv
+
       - name: Commit and push changes
+        if: success()
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add sportstech.csv
           git commit -m "Update sportstech.csv via GitHub Actions"
-          git push https://x-access-token:${{ secrets.ACTIONS_TOKEN }}@github.com/kennymcmillan/SportsTechX.git HEAD:main
+          git push https://x-access-token:${{ secrets.ACTIONS_TOKEN }}@github.com/kennymcmillan/SportsTechX.git HEAD:master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
