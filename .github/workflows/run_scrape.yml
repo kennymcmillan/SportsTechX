@@ -41,6 +41,7 @@ jobs:
           unzip ~/chromedriver_linux64.zip -d ~/
           sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
           sudo chmod 0755 /usr/local/bin/chromedriver
+          export PATH=$PATH:/usr/local/bin/chromedriver
 
       - name: Run Python script
         run: python sporttechXfull_scrape.py
