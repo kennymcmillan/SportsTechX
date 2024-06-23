@@ -57,7 +57,7 @@ def extract_rows():
             cells = row.find_elements(By.CLASS_NAME, 'cell')
             row_data = [cell.text for cell in cells]
             rows_data.append(row_data)
-            print(row_data)
+            
         except StaleElementReferenceException:
             continue  
     return rows_data
@@ -74,6 +74,7 @@ for page in range(min(2, total_pages)):
 
     driver.execute_script('arguments[0].scrollTop = 0', scroll_container)
     time.sleep(3)
+    print(page)
     
     for _ in range(6):  ## inner loop
         new_rows_data = extract_rows()
