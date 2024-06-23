@@ -69,7 +69,8 @@ page_info = driver.find_element(By.CSS_SELECTOR, ".pageLabel").text
 max_rows = int(re.search(r'/ (\d+)', page_info).group(1))
 total_pages = (max_rows + 99) // 100  
 
-for _ in range(total_pages): ## outer loop
+for page in range(min(2, total_pages)):
+#for _ in range(total_pages): ## outer loop
 
     if page_number >= 2:
         break
