@@ -29,7 +29,7 @@ jobs:
       - name: Install Chrome
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip
+          sudo apt-get install -y wget unzip xvfb
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb
           sudo apt-get install -f
@@ -38,7 +38,12 @@ jobs:
         run: google-chrome --version
 
       - name: Run Python script
-        run: python sporttechXfull_scrape.py
+        env:
+          DISPLAY: ":99.0"
+        run: |
+          Xvfb :99 -ac &
+          sleep 3 # Give Xvfb some time to start
+          python sporttechXfull_scrape.py
 
       - name: Commit and push changes
         run: |
@@ -49,3 +54,4 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
