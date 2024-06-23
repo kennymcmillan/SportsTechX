@@ -57,7 +57,7 @@ def extract_rows():
             cells = row.find_elements(By.CLASS_NAME, 'cell')
             row_data = [cell.text for cell in cells]
             rows_data.append(row_data)
-            print(row_data)
+            # print(row_data)
         except StaleElementReferenceException:
             continue  
     return rows_data
