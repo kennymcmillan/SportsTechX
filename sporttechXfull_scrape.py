@@ -9,6 +9,9 @@ from selenium.common.exceptions import StaleElementReferenceException, NoSuchEle
 # Setup Chrome and WebDriver
 options = webdriver.ChromeOptions()
 options.add_argument("--incognito")
+options.add_argument("--headless")  # Add headless option
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
