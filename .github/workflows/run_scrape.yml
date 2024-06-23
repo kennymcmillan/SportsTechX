@@ -52,13 +52,13 @@ jobs:
           path: sportstech.csv
 
       - name: Commit and push changes
-        if: success()
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add sportstech.csv
           git commit -m "Update sportstech.csv via GitHub Actions"
           git push https://x-access-token:${{ secrets.ACTIONS_TOKEN }}@github.com/kennymcmillan/SportsTechX.git HEAD:master
+
         env:
           ACTIONS_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
 
