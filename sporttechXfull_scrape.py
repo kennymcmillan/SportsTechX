@@ -103,3 +103,5 @@ df.sort_values('Number', inplace=True)
 
 df.to_csv("sportstech.csv")
 
+print("Finished!")
+
