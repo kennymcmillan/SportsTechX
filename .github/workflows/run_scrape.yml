@@ -2,7 +2,8 @@ name: Run sporttechXfull_scrape
 
 on:
   schedule:
-    - cron: "10 16 * * *" # Runs daily at 4:10 PM UTC
+    - cron: "0 0 * * *" # Runs daily at 4:10 PM UTC
+    - cron: '0 12 * * *'
   push:
     branches:
       - master
